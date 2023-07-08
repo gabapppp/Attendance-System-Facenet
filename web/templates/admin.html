@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<div class="container mt-4">
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="/admin">User</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/admin/tracking">Tracking</a>
+    </li>
+  </ul>
+  <div class="table-responsive-sm">
+    <table class="table table-default">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Email</th>
+          <th scope="col">#</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in user_list %}
+        <tr class="">
+          <td scope="row">{{ user.id}}</td>
+          <td>{{user.name}}</td>
+          <td>{{user.email}}</td>
+          <td>
+            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#faceModal"
+              data-bs-whatever="">
+              Set Face
+            </button>
+            <!-- 
+            <a role="button" class="btn btn-primary btn-sm" href="/setFace/{{user.id}}">
+              Set Face
+            </a>
+            -->
+            <span>/</span>
+            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal"
+              data-bs-whatever="">
+              Edit
+            </button>
+            <span>/</span>
+            <button type="button" id="btnOpenDel" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+              data-bs-target="#deleteModal" data-whatever="{{user.id}}">
+              Delete
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <!-- Modal trigger button -->
+
+  <!-- Modal Body -->
+  <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+    role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitleId"> Delete This User</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <p>Are you sure you want to delete?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            <button id="delBtn" type="button" class="btn btn-danger">DELETE</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+    <div class="modal fade" id="editModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+      role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalTitleId">Edit User</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <form action="{{url_for('editUser')}}" method="POST">
+                <label for="userID" class="form-label">ID</label>
+                <input type="text" name="id" id="userID" class="form-control" placeholder="">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" name="" id="" class="form-control" placeholder="">
+                <label for="email" class="form-label">Email</label>
+                <input type="text" name="" id="" class="form-control" placeholder="">
+                <br>
+                <button type="submit" class="btn btn-primary align-self-end">Save</button>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--
+    <nav aria-label="Page User List">
+      <ul class="pagination justify-content-center">
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    -->
+
+    <!-- Optional: Place to the bottom of scripts -->
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $("#deleteModal").on('show.bs.modal', function (event) {
+          var button = $(event.relatedTarget);
+          var user_id = button.data('whatever');
+          // Send the data using post
+          $("#delBtn").click(function () {
+            if (user_id) {
+              var posting = $.post("http://localhost:5000/user/" + user_id + "/delete");
+
+              // Put the results in a div
+              posting.done(function (data) {
+                var content = $(data).find("#content");
+                $("#result").empty().append(content);
+                window.location.replace("/admin");
+              });
+            };
+          })
+        });
+      });
+    </script>
+
+  </div>
+  {% endblock %}

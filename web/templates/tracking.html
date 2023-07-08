@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block main %}
+
+<div class="container mt-4">
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link" href="/admin">User</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="/admin/tracking">Tracking</a>
+    </li>
+  </ul>
+  <div class="table-responsive-sm">
+    <table class="table table-default">
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th scope="col">Name</th>
+          <th scope="col">ID</th>
+          <th scope="col">Time</th>
+          <td>#</td>
+        </tr>
+      </thead>
+      <tbody>
+        {% for tracking in trackings %}
+        <tr class="">
+          <td scope="row">{{tracking.no}}</td>
+          <td>{{tracking.name}}</td>
+          <td>{{tracking.user_id}}</td>
+          <td>{{tracking.time}}</td>
+          <td>
+            <button type="button" id="btnOpenDel" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+              data-bs-target="#deleteModal" data-whatever="{{tracking.no}}">
+              Delete
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <!--
+    <nav aria-label="Page Tracking List">
+      <ul class="pagination justify-content-center">
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    -->
+  </div>
+
+  <div class="modal fade" id="deleteModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+    role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitleId"> Delete This User</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <p>Are you sure you want to delete?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            <button id="delBtn" type="button" class="btn btn-danger">DELETE</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <script type=text/javascript>
+      $(document).ready(function () {
+        $("#deleteModal").on('show.bs.modal', function (event) {
+          var button = $(event.relatedTarget);
+          var tracking_no = button.data('whatever');
+          // Send the data using post
+          $("#delBtn").click(function () {
+            if (tracking_no) {
+            var posting = $.post("http://localhost:5000/tracking/" + tracking_no + "/delete");
+
+            // Put the results in a div
+            posting.done(function (data) {
+              var content = $(data).find("#content");
+              $("#result").empty().append(content);
+              window.location.replace("/admin/tracking");
+            });
+          };
+        }); 
+        });
+      });
+    </script>
+  </div>
+
+
+  {% endblock %}

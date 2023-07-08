@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block main %}
+
+<div class="container mt-4">
+
+    <div class="text-center mt-4">
+        <img src="{{url_for('get_face', uid=uid )}}" class="rounded" alt="...">
+    </div>
+    <br>
+    <div class="text-center mt-4">
+        <span>Getting face of {{uid}}</span>
+        <br />
+        <span>If everything's done, please return to</span>
+        <a href="{{url_for('admin')}}">Admin page</a>
+    </div>
+</div>
+
+{% endblock %}
