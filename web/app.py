@@ -100,7 +100,7 @@ def extract_face(box, img, margin=20):
 
 
 def addAttendance(name):
-    split = name[0].split('-')
+    split = name.split('-')
     id = split[0]
     name = split[1]
     tracking = Tracking(user_id=id, name=name)
@@ -151,7 +151,7 @@ def gen_frames():
                         frame = cv2.putText(frame, names[idx] + '_{:.2f}'.format(
                             score), (bbox[0], bbox[1]), cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 255, 0), 1, cv2.LINE_8)
                         if count == 0:
-                            addAttendance(names)
+                            addAttendance(names[idx])
                             count = 20
                         count -= 1
                     else:
