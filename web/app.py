@@ -39,6 +39,8 @@ migrate = Migrate(app, db)
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 # model
+with app.app_context:
+    db.create_all()
 
 
 class User(db.Model):
@@ -107,6 +109,7 @@ def addAttendance(name):
     with app.app_context():
         db.session.add(tracking)
         db.session.commit()
+        # flash("Add face successfully")
 
 
 @app.route('/')

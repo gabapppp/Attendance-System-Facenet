@@ -27,19 +27,21 @@
           <td>{{user.name}}</td>
           <td>{{user.email}}</td>
           <td>
-            <a role="button" class="btn btn-primary btn-sm" href="/setFace/{{user.id}}">
-              Set Face
-            </a>
-            <span>/</span>
-            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal"
-              data-bs-whatever="">
-              Edit
-            </button>
-            <span>/</span>
-            <button type="button" id="btnOpenDel" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-              data-bs-target="#deleteModal" data-whatever="{{user.id}}">
-              Delete
-            </button>
+            <div clasa="container mw-220">
+              <div class="d-flex justify-content-between">
+                <a role="button" class="btn btn-primary btn-sm" href="/setFace/{{user.id}}">
+                  Set Face
+                </a>
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal"
+                  data-bs-whatever="">
+                  Edit
+                </button>
+                <button type="button" id="btnOpenDel" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                  data-bs-target="#deleteModal" data-whatever="{{user.id}}">
+                  Delete
+                </button>
+              </div>
+            </div>
           </td>
         </tr>
         {% endfor %}

@@ -28,7 +28,7 @@ def load_faceslist():
     return embeds, names
 
 
-def inference(model, face, local_embeds, threshold=3):
+def inference(model, face, local_embeds, threshold=0.6):
     # local: [n,512] voi n la so nguoi trong faceslist
     embeds = []
     # print(trans(face).unsqueeze(0).shape)
@@ -41,7 +41,6 @@ def inference(model, face, local_embeds, threshold=3):
     # print(norm_diff)
     # (1,n), moi cot la tong khoang cach euclide so vs embed moi
     norm_score = torch.sum(torch.pow(norm_diff, 2), dim=1)
-
     min_dist, embed_idx = torch.min(norm_score, dim=1)
     print(min_dist*power, names[embed_idx])
     # print(min_dist.shape)
